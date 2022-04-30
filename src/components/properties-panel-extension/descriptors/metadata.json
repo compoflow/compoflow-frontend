@@ -1,0 +1,24 @@
+{
+  "name": "Metadata",
+  "prefix": "metadata",
+  "uri": "http://metadata",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "associations": [],
+  "types": [
+    {
+      "name": "docker_node",
+      "extends": [
+        "bpmn:Task"
+      ],
+      "properties": [
+        {
+          "name": "image",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    }
+  ]
+}

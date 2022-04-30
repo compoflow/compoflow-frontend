@@ -1,0 +1,31 @@
+/*
+ * @Author: Lavender
+ * @Date: 2021-12-14 20:14:27
+ * @LastEditors: Lavender
+ * @LastEditTime: 2021-12-18 14:25:24
+ * @Description: 添加自定义元素的样式，与util.js保持一致
+ * @FilePath: /argo_bpmn/bpmnjs/src/css/app.css
+ */
+
+.icon-custom { 
+    /* 定义一个公共的类名 */
+    border-radius: 50%;
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon-custom.docker { 
+    /* docker背景图 */
+    background-image: url('../assets/docker.png');
+}
+
+.icon-custom.pythonscript {
+    /* pythonscrip背景图 */
+    background-image: url('../assets/pythonscript.png');
+}
+
+.icon-custom.suspend {
+    /* suspend背景图 */
+    background-image: url('../assets/suspend.png');
+}
