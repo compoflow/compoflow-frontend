@@ -7,7 +7,7 @@
  * @FilePath: /bpmn_workflow/src/components/properties-panel-extension/provider/metadata/parts/TitleProps.js
  */
 
-import entryFactory, { label } from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
+import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
 import participantHelper from 'bpmn-js-properties-panel/lib/helper/ParticipantHelper'
 
 export default function (group, element, translate) {
