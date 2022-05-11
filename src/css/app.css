@@ -29,3 +29,18 @@
     /* suspend背景图 */
     background-image: url('../assets/suspend.png');
 }
+
+.icon-custom.filter {
+    /* filter背景图 */
+    background-image: url('../assets/filter.png');
+}
+
+.icon-custom.split {
+    /* split背景图 */
+    background-image: url('../assets/split.png');
+}
+
+.icon-custom.join {
+    /* join背景图 */
+    background-image: url('../assets/join.png');
+}

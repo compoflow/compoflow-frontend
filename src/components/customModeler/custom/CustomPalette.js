@@ -85,6 +85,60 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
         }
     }
 
+    /**
+     * 过滤节点
+     * @returns {(function(*): void)|*}
+     */
+    function createFilter() {
+        return function (event) {
+            const businessObject = bpmnFactory.create('bpmn:Task', { custom: 4 });
+            var arr = businessObject.id.split('_');
+            arr[0] = 'Filter'
+            businessObject.id = arr[0] + '_' + arr[1]
+            const shape = elementFactory.createShape({
+                type: 'bpmn:filter',
+                businessObject,
+            });
+            create.start(event, shape);
+        }
+    }
+
+    /**
+     * 分支节点
+     * @returns {(function(*): void)|*}
+     */
+    function createSplit() {
+        return function (event) {
+            const businessObject = bpmnFactory.create('bpmn:Task', { custom: 5 });
+            var arr = businessObject.id.split('_');
+            arr[0] = 'Split'
+            businessObject.id = arr[0] + '_' + arr[1]
+            const shape = elementFactory.createShape({
+                type: 'bpmn:split',
+                businessObject,
+            });
+            create.start(event, shape);
+        }
+    }
+
+    /**
+     * 聚合节点
+     * @returns {(function(*): void)|*}
+     */
+    function createJoin() {
+        return function (event) {
+            const businessObject = bpmnFactory.create('bpmn:Task', { custom: 6 });
+            var arr = businessObject.id.split('_');
+            arr[0] = 'Join'
+            businessObject.id = arr[0] + '_' + arr[1]
+            const shape = elementFactory.createShape({
+                type: 'bpmn:join',
+                businessObject,
+            });
+            create.start(event, shape);
+        }
+    }
+
     return {
         'create.docker': {
             group: 'model',
@@ -112,6 +166,33 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
                 dragstart: createSuspend(),
                 click: createSuspend()
             }
-        }
+        },
+        'create.filter': {
+            group: 'model',
+            className: 'icon-custom filter',
+            title: '创建过滤器',
+            action: {
+                dragstart: createFilter(),
+                click: createFilter()
+            }
+        },
+        'create.split': {
+            group: 'model',
+            className: 'icon-custom split',
+            title: '创建分支',
+            action: {
+                dragstart: createSplit(),
+                click: createSplit()
+            }
+        },
+        'create.join': {
+            group: 'model',
+            className: 'icon-custom join',
+            title: '创建聚合',
+            action: {
+                dragstart: createJoin(),
+                click: createJoin()
+            }
+        },
     }
 }

@@ -21,7 +21,10 @@ import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
 import './css/app.css'
 
+Vue.use(ElementUI.Container)
+Vue.use(ElementUI.Footer)
 Vue.use(ElementUI.Button)
+Vue.use(ElementUI.Upload)
 
 new Vue({
   render: h => h(App),

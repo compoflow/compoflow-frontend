@@ -90,12 +90,18 @@ CustomRenderer.prototype.canRender = function(element) {
 CustomRenderer.prototype.drawShape = function(p, element) {
     // 通过修改后的id前缀来加载自定义的类型
     var arr = element.id.split('_')
-    if (arr[0]=="Docker") {
+    if (arr[0] === "Docker") {
         element.type="bpmn:docker"
-    } else if (arr[0]=="Pythonscript") {
+    } else if (arr[0] === "Pythonscript") {
         element.type="bpmn:pythonscript"
-    } else if (arr[0]=="Suspend") {
+    } else if (arr[0] === "Suspend") {
         element.type="bpmn:suspend"
+    } else if (arr[0] === "Filter") {
+        element.type = "bpmn:filter"
+    } else if (arr[0] === "Split") {
+        element.type = "bpmn:split"
+    } else if (arr[0] === "Join") {
+        element.type = "bpmn:join"
     }
     if (customElements.includes(element.type)) {
         return this.drawCustomElements(p, element)
