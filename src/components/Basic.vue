@@ -13,9 +13,31 @@
     <template v-else>
       <div class="canvas" ref="canvas"></div>
       <div id="js-properties-panel" class="panel"></div>
-      <el-button class="buttons" type="success" @click="postXML" round
-        >部署</el-button
-      >
+      <el-container direction="horizontal">
+        <el-footer>
+          <el-button class="buttons" type="success" @click="postXML" round>部署</el-button>
+        </el-footer>
+        <el-footer>
+          <el-button class="buttons" type="success" @click="uploadXML" round>保存到云端</el-button>
+        </el-footer>
+        <el-footer>
+          <el-button class="buttons" type="success" @click="downloadXML" round>保存到本地</el-button>
+        </el-footer>
+        <el-footer>
+          <el-upload
+              class="upload-demo"
+              action=""
+              :show-file-list=false
+              accept="xml"
+              :on-change="loadLocalXML"
+              :file-list="fileList"
+              :http-request="noOps">
+            <el-button class="buttons" type="primary">从本地加载</el-button>
+            <div slot="tip" class="el-upload__tip">上传BPMN XML文件</div>
+          </el-upload>
+        </el-footer>
+      </el-container>
+<!--      <el-button class="buttons" type="success" @click="loadLocalXML" round>从本地加载</el-button>-->
     </template>
   </div>
 </template>
@@ -48,6 +70,7 @@ export default {
       bpmnModeler: null,
       container: null,
       canvas: null,
+      fileList: [],
     };
   },
   // 方法集合
@@ -148,7 +171,7 @@ export default {
         const { xml } = result;
         console.log(xml);
         axios
-          .post("http://localhost:30086/", { xml: xml })
+          .post("http://localhost:30086/deploy", { xml: xml })
           .then((response) => {
             if (response.data == "failed") {
               alert("部署失败");
@@ -206,7 +229,63 @@ export default {
       //   link.download = name;
       // }
     },
+
+    // 保存xml到minio
+    uploadXML() {
+
+    },
+
+    // 保存xml到本地
+    async downloadXML() {
+      try {
+        const result = await this.bpmnModeler.saveXML({ format: true });
+        let { xml } = result;
+        // 必须对这两个符号进行转义，否则会保存失败
+        xml = xml.replaceAll("&#", "%26%23")
+
+        var obj=document.getElementById('js-properties-panel');
+        // IE浏览器
+        if(!!window.ActiveXObject || "ActiveXObject" in window) {
+          var winname = window.open('', '_blank', 'top=10000');
+          winname.document.open('text/xml', 'replace');
+          winname.document.writeln(xml);
+          winname.document.execCommand('saveas','','bpmn.xml');
+          winname.close();
+        } else {
+          // chrome、火狐等现代浏览器
+          var a = document.createElement('a');
+          var filename = "bpmn.xml"
+          a.setAttribute('href', 'data:text/xml,' + xml);
+          a.setAttribute('download', filename);
+          a.setAttribute('target', '_blank');
+          a.style.display="none";
+          obj.parentNode.appendChild(a);
+          a.click();
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // 从本地加载xml
+    loadLocalXML(file, fileList) {
+      file.raw.text().then(async res => {
+        console.log(res)
+        try {
+          const result = await this.bpmnModeler.importXML(res);
+          const {warnings} = result;
+          console.log(warnings);
+          this.success();
+        } catch (err) {
+          console.log(err.message, err.warnings);
+          alert("xml文件格式错误，请检查后再上传！")
+        }
+      })
+    },
+
+    noOps() {}
   },
+
   // 计算属性
   computed: {},
 };

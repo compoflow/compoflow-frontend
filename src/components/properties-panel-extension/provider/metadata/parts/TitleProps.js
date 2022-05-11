@@ -8,6 +8,7 @@
  */
 
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
+import participantHelper from 'bpmn-js-properties-panel/lib/helper/ParticipantHelper'
 
 export default function (group, element, translate) {
     var project_name = localStorage.getItem("project")
@@ -19,7 +20,12 @@ export default function (group, element, translate) {
     //         modelProperty: 'title'
     //     }));
     // }
-    if (element.type == 'bpmn:docker') {
+
+    /**
+     * docker
+     */
+    if (element.type === 'bpmn:docker') {
+        group.label = '微服务调用节点'
         var options = []
         const req = new XMLHttpRequest();
         req.open("GET", 'http://106.14.40.180:31003/api/servicePackage/image/listRemote/' + project_name, false)
@@ -44,8 +50,62 @@ export default function (group, element, translate) {
             modelProperty: 'image'
         }))
     }
-}
 
-//
-// 从后端获得docker列表
-//
+    /**
+     * pythonscript
+     */
+    if (element.type === 'bpmn:pythonscript') {
+        group.label = 'python脚本节点'
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'filter-textBox-1',
+            label: '脚本源代码',
+            modelProperty: 'srcCode',
+        }))
+    }
+
+    /**
+     * filter
+     */
+    if (element.type === 'bpmn:filter') {
+        group.label = '过滤节点'
+        var conditions = [
+            {"name": "大于", "value": ">"},
+            {"name": "大于等于", "value": ">="},
+            {"name": "等于", "value": "=="},
+            {"name": "不等于", "value": "!="},
+            {"name": "小于等于", "value": "<="},
+            {"name": "小于", "value": "<"},
+        ]
+
+        group.entries.push(entryFactory.textField(translate, {
+            id: 'filter-textField-1',
+            label: '左值',
+            modelProperty: 'leftValue',
+        }))
+        group.entries.push(entryFactory.selectBox(translate, {
+            id: 'filter-selectBox-1',
+            label: '条件',
+            selectOptions: conditions,
+            modelProperty: 'condition'
+        }))
+        group.entries.push(entryFactory.textField(translate, {
+            id: 'filter-textField-2',
+            label: '右值',
+            modelProperty: 'rightValue',
+        }))
+    }
+
+    /**
+     * split
+     */
+    if (element.type === 'bpmn:split') {
+        group.label = '分支节点'
+    }
+
+    /**
+     * join
+     */
+    if (element.type === 'bpmn:join') {
+        group.label = '聚合节点'
+    }
+}

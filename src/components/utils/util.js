@@ -7,7 +7,16 @@
  * @FilePath: /argo_bpmn/bpmnjs/src/components/utils/util.js
  */
 
-const customElements = ['bpmn:StartEvent','bpmn:docker','bpmn:pythonscript','bpmn:suspend']
+const customElements = [
+    'bpmn:StartEvent',
+    'bpmn:docker',
+    'bpmn:pythonscript',
+    'bpmn:suspend',
+    'bpmn:filter',
+    'bpmn:split',
+    'bpmn:join',
+]
+
 const customConfig = {
     'bpmn:docker':{
         'url':require('../../assets/docker.png'),
@@ -21,8 +30,28 @@ const customConfig = {
         'url':require('../../assets/suspend.png'),
         'attr':{x:0,y:0,width:48,height:48}
     },
+    'bpmn:filter': {
+        'url': require('../../assets/filter.png'),
+        'attr': {x:0,y:0,width:48,height:48}
+    },
+    'bpmn:split': {
+        'url': require('../../assets/split.png'),
+        'attr': {x:0,y:0,width:48,height:48}
+    },
+    'bpmn:join': {
+        'url': require('../../assets/join.png'),
+        'attr': {x:0,y:0,width:48,height:48}
+    },
 }
 
-const hasLabelElements=['bpmn:StartEvent','bpmn:pythonscript','bpmn:docker','bpmn:suspend']
+const hasLabelElements=[
+    'bpmn:StartEvent',
+    'bpmn:pythonscript',
+    'bpmn:docker',
+    'bpmn:suspend',
+    'bpmn:filter',
+    'bpmn:split',
+    'bpmn:join',
+]
 
 export {customElements,customConfig,hasLabelElements}

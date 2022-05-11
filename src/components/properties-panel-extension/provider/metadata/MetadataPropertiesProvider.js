@@ -25,12 +25,12 @@ import {
 function createMetadataTabGroups(element, bpmnFactory, canvas, elementRegistry, translate) {
     var metadataGroup = {
         id: 'metadata',
-        label: '填入描述',
+        label: '属性配置',
         entries: []
     };
-    // idProps(metadataGroup, element, translate);
+    idProps(metadataGroup, element, translate);
     nameProps(metadataGroup, element, bpmnFactory, canvas, translate);
-    // processProps(metadataGroup, element, translate);
+    processProps(metadataGroup, element, translate);
 
 
     TitleProps(metadataGroup, element, translate)
