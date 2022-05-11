@@ -49,6 +49,30 @@ export default function (group, element, translate) {
             selectOptions: options,
             modelProperty: 'image'
         }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'port',
+            description: '服务的端口（默认80）',
+            label: '端口',
+            modelProperty: 'port'
+        }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'target',
+            description: '服务的路径（默认"/"）',
+            label: '路径',
+            modelProperty: 'target'
+        }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'command',
+            description: '镜像启动命令（默认为空）',
+            label: '镜像启动命令',
+            modelProperty: 'command'
+        }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'args',
+            description: '镜像启动参数（默认无参数）',
+            label: '镜像启动参数',
+            modelProperty: 'args'
+        }))
     }
 
     /**
@@ -69,12 +93,12 @@ export default function (group, element, translate) {
     if (element.type === 'bpmn:filter') {
         group.label = '过滤节点'
         var conditions = [
-            {"name": "大于", "value": ">"},
-            {"name": "大于等于", "value": ">="},
-            {"name": "等于", "value": "=="},
-            {"name": "不等于", "value": "!="},
-            {"name": "小于等于", "value": "<="},
-            {"name": "小于", "value": "<"},
+            { "name": "大于", "value": ">" },
+            { "name": "大于等于", "value": ">=" },
+            { "name": "等于", "value": "==" },
+            { "name": "不等于", "value": "!=" },
+            { "name": "小于等于", "value": "<=" },
+            { "name": "小于", "value": "<" },
         ]
 
         group.entries.push(entryFactory.textField(translate, {
