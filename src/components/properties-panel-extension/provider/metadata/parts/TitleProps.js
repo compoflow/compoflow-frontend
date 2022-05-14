@@ -44,7 +44,7 @@ export default function (group, element, translate) {
         }
         group.entries.push(entryFactory.selectBox(translate, {
             id: 'image',
-            description: '权限的标题',
+            description: '服务镜像',
             label: '镜像',
             selectOptions: options,
             modelProperty: 'image'
@@ -80,10 +80,22 @@ export default function (group, element, translate) {
      */
     if (element.type === 'bpmn:pythonscript') {
         group.label = 'python脚本节点'
+        var versions = [
+            { "name": "2.7", "value": "2.7" },
+            { "name": "3.6", "value": "3.6" },
+            { "name": "3.8", "value": "3.8" },
+        ]
+        group.entries.push(entryFactory.selectBox(translate, {
+            id: 'pythonscript-selectBox-1',
+            label: 'python版本',
+            selectOptions: versions,
+            modelProperty: 'version'
+        }))
         group.entries.push(entryFactory.textBox(translate, {
-            id: 'filter-textBox-1',
+            id: 'pythonscript-textBox-1',
             label: '脚本源代码',
-            modelProperty: 'srcCode',
+            modelProperty: 'script',
+            description: '输入json对象请从\'input\'变量获取，输出json对象请赋值给\'result\'变量'
         }))
     }
 
