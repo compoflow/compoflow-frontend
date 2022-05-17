@@ -9,6 +9,7 @@
 
 const customElements = [
     'bpmn:StartEvent',
+    'bpmn:starter',
     'bpmn:docker',
     'bpmn:pythonscript',
     'bpmn:suspend',
@@ -18,6 +19,10 @@ const customElements = [
 ]
 
 const customConfig = {
+    'bpmn:starter':{
+        'url':require('../../assets/starter.png'),
+        'attr':{x:0,y:0,width:48,height:48},
+    },
     'bpmn:docker':{
         'url':require('../../assets/docker.png'),
         'attr':{x:0,y:0,width:48,height:48},

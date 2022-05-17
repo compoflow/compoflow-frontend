@@ -22,6 +22,51 @@ export default function (group, element, translate) {
     // }
 
     /**
+     * starter
+     */
+    if (element.type === 'bpmn:starter') {
+        group.label = '启动节点'
+        var workflowTypes = [
+            { "name": "", "value": "" },
+            { "name": "单次执行", "value": "once" },
+            { "name": "定时执行", "value": "cron" },
+        ]
+        var timeUnits = [
+            { "name": "", "value": "" },
+            { "name": "分", "value": "m" },
+            { "name": "时", "value": "h" },
+            { "name": "天", "value": "d" },
+        ]
+        group.entries.push(entryFactory.selectBox(translate, {
+            id: 'starter-selectBox-1',
+            label: '工作流类型',
+            selectOptions: workflowTypes,
+            modelProperty: 'workflowType'
+        }))
+        group.entries.push(entryFactory.label({
+            id: 'starter-label-1',
+            divider: true
+        }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'starter-textBox-1',
+            label: '时间间隔',
+            modelProperty: 'interval'
+        }))
+        group.entries.push(entryFactory.selectBox(translate, {
+            id: 'starter-selectBox-2',
+            label: '单位',
+            selectOptions: timeUnits,
+            modelProperty: 'timeUnit',
+        }))
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'starter-textBox-2',
+            label: 'cron表达式(* * * * *)',
+            description: '自定义cron表达式，如果填写则以此为准',
+            modelProperty: 'cronExpression'
+        }))
+    }
+
+    /**
      * docker
      */
     if (element.type === 'bpmn:docker') {
@@ -117,6 +162,7 @@ export default function (group, element, translate) {
             id: 'filter-textField-1',
             label: '左值',
             modelProperty: 'leftValue',
+            description: '请使用{{}}获取json属性值，例如{{msg.payload}}',
         }))
         group.entries.push(entryFactory.selectBox(translate, {
             id: 'filter-selectBox-1',
@@ -128,6 +174,13 @@ export default function (group, element, translate) {
             id: 'filter-textField-2',
             label: '右值',
             modelProperty: 'rightValue',
+            description: '请使用{{}}获取json属性值，例如{{msg.payload}}',
+        }))
+        group.entries.push(entryFactory.textField(translate, {
+            id: 'filter-textField-3',
+            label: 'JSONata表达式',
+            modelProperty: 'expression',
+            description: '自定义JSONata表达式，如果填写则用它进行判断',
         }))
     }
 
@@ -142,6 +195,12 @@ export default function (group, element, translate) {
      * join
      */
     if (element.type === 'bpmn:join') {
-        group.label = '聚合节点'
+        group.label = '同步节点'
+        group.entries.push(entryFactory.textField(translate, {
+            id: 'join-textField-1',
+            label: '最长等待时间(ms)',
+            modelProperty: 'waitMillis',
+            description: '请输入大于0的整数（默认为无限长）',
+        }))
     }
 }

@@ -90,7 +90,9 @@ CustomRenderer.prototype.canRender = function(element) {
 CustomRenderer.prototype.drawShape = function(p, element) {
     // 通过修改后的id前缀来加载自定义的类型
     var arr = element.id.split('_')
-    if (arr[0] === "Docker") {
+    if (arr[0] === "Starter") {
+        element.type="bpmn:starter"
+    } else if (arr[0] === "Docker") {
         element.type="bpmn:docker"
     } else if (arr[0] === "Pythonscript") {
         element.type="bpmn:pythonscript"

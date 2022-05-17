@@ -15,6 +15,11 @@
     background-position: center;
 }
 
+.icon-custom.starter {
+    /* starter背景图 */
+    background-image: url('../assets/starter.png');
+}
+
 .icon-custom.docker { 
     /* docker背景图 */
     background-image: url('../assets/docker.png');

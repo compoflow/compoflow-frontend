@@ -34,6 +34,24 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
         bpmnFactory
     } = this;
 
+    /**
+     * 启动节点
+     * @returns {(function(*): void)|*}
+     */
+    function createStarter() {
+        return function (event) {
+            const businessObject = bpmnFactory.create('bpmn:Task', { custom: 0 });
+            var arr = businessObject.id.split('_');
+            arr[0] = 'Starter'
+            businessObject.id = arr[0] + '_' + arr[1]
+            const shape = elementFactory.createShape({
+                type: 'bpmn:starter',
+                businessObject,
+            });
+            create.start(event, shape);
+        }
+    }
+
     function createDocker() {
         return function (event) {
             const businessObject = bpmnFactory.create('bpmn:Task', { custom: 1 });
@@ -122,7 +140,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
     }
 
     /**
-     * 聚合节点
+     * 同步节点
      * @returns {(function(*): void)|*}
      */
     function createJoin() {
@@ -140,6 +158,15 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
     }
 
     return {
+        'create.starter': {
+            group: 'model',
+            className: 'icon-custom starter',
+            title: '创建任务容器',
+            action: {
+                dragstart: createStarter(),
+                click: createStarter()
+            }
+        },
         'create.docker': {
             group: 'model',
             className: 'icon-custom docker',
