@@ -8,26 +8,13 @@
   "associations": [],
   "types": [
     {
-      "name": "docker_node",
+      "name": "WorkflowStarter",
       "extends": [
-        "bpmn:Task"
+        "bpmn:StartEvent"
       ],
       "properties": [
         {
-          "name": "image",
-          "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
-      "name": "filter_node",
-      "extends": [
-        "bpmn:Task"
-      ],
-      "properties": [
-        {
-          "name": "condition",
+          "name": "custom",
           "isAttr": true,
           "type": "String"
         }

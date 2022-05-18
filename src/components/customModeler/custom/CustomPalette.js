@@ -41,9 +41,7 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
     function createStarter() {
         return function (event) {
             const businessObject = bpmnFactory.create('bpmn:Task', { custom: 0 });
-            var arr = businessObject.id.split('_');
-            arr[0] = 'Starter'
-            businessObject.id = arr[0] + '_' + arr[1]
+            businessObject.id = 'Starter'
             const shape = elementFactory.createShape({
                 type: 'bpmn:starter',
                 businessObject,

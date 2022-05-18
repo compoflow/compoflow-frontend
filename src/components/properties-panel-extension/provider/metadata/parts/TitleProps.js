@@ -8,18 +8,11 @@
  */
 
 import entryFactory from 'bpmn-js-properties-panel/lib/factory/EntryFactory';
-import participantHelper from 'bpmn-js-properties-panel/lib/helper/ParticipantHelper'
+import en from "element-ui/src/locale/lang/en";
+import {is} from "bpmn-js/lib/util/ModelUtil";
 
 export default function (group, element, translate) {
     var project_name = localStorage.getItem("project")
-    // if (element.type=='bpmn:docker') { // 可以在这里做类型判断
-    //     group.entries.push(entryFactory.textField(translate,{
-    //         id: 'title',
-    //         description: '权限的标题',
-    //         label: '标题',
-    //         modelProperty: 'title'
-    //     }));
-    // }
 
     /**
      * starter
@@ -27,15 +20,18 @@ export default function (group, element, translate) {
     if (element.type === 'bpmn:starter') {
         group.label = '启动节点'
         var workflowTypes = [
-            { "name": "", "value": "" },
             { "name": "单次执行", "value": "once" },
             { "name": "定时执行", "value": "cron" },
         ]
         var timeUnits = [
-            { "name": "", "value": "" },
             { "name": "分", "value": "m" },
             { "name": "时", "value": "h" },
             { "name": "天", "value": "d" },
+        ]
+        var strategies = [
+            { "name": "允许", "value": "allow" },
+            { "name": "替换", "value": "replace" },
+            { "name": "不允许", "value": "forbid" },
         ]
         group.entries.push(entryFactory.selectBox(translate, {
             id: 'starter-selectBox-1',
@@ -63,6 +59,27 @@ export default function (group, element, translate) {
             label: 'cron表达式(* * * * *)',
             description: '自定义cron表达式，如果填写则以此为准',
             modelProperty: 'cronExpression'
+        }))
+        // group.entries.push(entryFactory.collapsible({
+        //     id: '123',
+        //     title: 'title',
+        //     description: 'description',
+        //     onToggle: function (value, entryNode) {
+        //         console.log(value)
+        //         console.log(entryNode)
+        //         entryNode.innerText="3123123123312"
+        //     },
+        //     onRemove: function (value, entryNode) {
+        //         value = false
+        //         entryNode.innerText=""
+        //     }
+        // }))
+        group.entries.push(entryFactory.selectBox(translate, {
+            id: 'starter-selectBox-3',
+            label: '并发执行策略',
+            selectOptions: strategies,
+            modelProperty: 'strategy',
+            description: '定时触发多条工作流并发执行时的策略.允许表示允许并发;替换表示终止未完成的工作流并执行新工作流;不允许表示不允许并发'
         }))
     }
 
