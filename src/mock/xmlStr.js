@@ -11,10 +11,10 @@
 export var xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.1.2">
   <process id="rtdtrdt" isExecutable="false">
-    <task id="Docker_0pizbzq" custom="1" image="platform-frontend:0.1.1-master-11">
+    <task id="Docker_0pizbzq" name="docker2" metadata:image="platform-frontend:0.1.1-master-11" custom="1" port="41235" target="/test2">
       <outgoing>Flow_1y469ct</outgoing>
     </task>
-    <task id="Docker_19t1frr" custom="1" image="platform-frontend:0.1.2-master-12">
+    <task id="Docker_19t1frr" name="docker1" metadata:image="platform-frontend:0.1.2-master-12" custom="1" port="41234" target="/test1">
       <outgoing>Flow_19iz00e</outgoing>
     </task>
     <task id="Suspend_04pttkt" custom="3">
