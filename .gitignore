@@ -2,6 +2,7 @@
 node_modules
 /dist
 /argo_bpmn/config
+package-lock.json
 
 # local env files
 .env.local
