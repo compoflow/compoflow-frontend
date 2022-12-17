@@ -7,7 +7,7 @@
  * @FilePath: /argo_bpmn/bpmnjs/src/components/utils/util.js
  */
 
-const customElements = ['bpmn:StartEvent','bpmn:docker','bpmn:pythonscript','bpmn:suspend']
+const customElements = ['bpmn:StartEvent','bpmn:docker','bpmn:pythonscript']
 const customConfig = {
     'bpmn:docker':{
         'url':require('../../assets/docker.png'),
@@ -16,13 +16,9 @@ const customConfig = {
     'bpmn:pythonscript':{
         'url':require('../../assets/pythonscript.png'),
         'attr':{x:0,y:0,width:48,height:48}
-    },
-    'bpmn:suspend':{
-        'url':require('../../assets/suspend.png'),
-        'attr':{x:0,y:0,width:48,height:48}
-    },
+    }
 }
 
-const hasLabelElements=['bpmn:StartEvent','bpmn:pythonscript','bpmn:docker','bpmn:suspend']
+const hasLabelElements=['bpmn:StartEvent','bpmn:pythonscript','bpmn:docker']
 
 export {customElements,customConfig,hasLabelElements}

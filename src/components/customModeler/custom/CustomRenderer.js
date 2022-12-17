@@ -94,8 +94,6 @@ CustomRenderer.prototype.drawShape = function(p, element) {
         element.type="bpmn:docker"
     } else if (arr[0]=="Pythonscript") {
         element.type="bpmn:pythonscript"
-    } else if (arr[0]=="Suspend") {
-        element.type="bpmn:suspend"
     }
     if (customElements.includes(element.type)) {
         return this.drawCustomElements(p, element)

@@ -68,23 +68,6 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
         }
     }
 
-    function createSuspend() {
-        return function (event) {
-            const businessObject = bpmnFactory.create('bpmn:Task', { custom: 3 });
-            var arr = businessObject.id.split('_');
-            arr[0] = 'Suspend'
-            businessObject.id = arr[0] + '_' + arr[1]
-            const shape = elementFactory.createShape({
-                type: 'bpmn:suspend',
-                businessObject
-            });
-            // const label = elementFactory.createLabel();
-            // console.log(shape) // 只在拖动或者点击时触发
-            // console.log(label) // 只在拖动或者点击时触发
-            create.start(event, shape);
-        }
-    }
-
     return {
         'create.docker': {
             group: 'model',
@@ -102,15 +85,6 @@ PaletteProvider.prototype.getPaletteEntries = function (element) {
             action: {
                 dragstart: createPythonScript(),
                 click: createPythonScript()
-            }
-        },
-        'create.suspend': {
-            group: 'model',
-            className: 'icon-custom suspend',
-            title: '创建暂停器',
-            action: {
-                dragstart: createSuspend(),
-                click: createSuspend()
             }
         }
     }
