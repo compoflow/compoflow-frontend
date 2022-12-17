@@ -13,9 +13,16 @@
     <template v-else>
       <div class="canvas" ref="canvas"></div>
       <div id="js-properties-panel" class="panel"></div>
-      <el-button class="buttons" type="success" @click="postXML" round
-        >部署</el-button
-      >
+      <div>
+        <el-button class="buttons" type="success" @click="newDiagram" round>新建</el-button>
+        <el-upload ref="upload" action :http-request="openDiagram" style="display: inline-block; margin-left: 10px; margin-right: 10px;">
+          <el-button class="buttons" type="success" round>上传</el-button>
+        </el-upload>
+        <el-button class="buttons" type="success" @click="saveDiagramBpmn" round>下载</el-button>
+        <el-button class="buttons" type="success" @click="postXML" round>部署</el-button>
+        <a hidden ref="downloadLink"></a>
+
+      </div>
     </template>
   </div>
 </template>
@@ -24,10 +31,10 @@
 // 引入相关的依赖
 import CustomModeler from "./customModeler";
 import propertiesPanelModule from "bpmn-js-properties-panel";
-import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
 import propertiesProviderModule from "./properties-panel-extension/provider/metadata";
 import medatadaModdleDescriptor from "./properties-panel-extension/descriptors/metadata";
 import { xmlStr } from "../mock/xmlStr";
+import { defaultTemplateXml } from "../mock/defaultXmlStr"
 import axios from "axios";
 import customModule from "./customModeler/custom";
 export default {
@@ -78,49 +85,25 @@ export default {
           metadata: medatadaModdleDescriptor,
         },
       });
-      this.createNewDiagram();
+      this.loadDefaultDiagram();
     },
-    async createNewDiagram() {
+    loadDefaultDiagram() {
+      this.createNewDiagram(xmlStr);
+    },
+    async createNewDiagram(createXmlStr) {
       // 将字符串转换成图显示出来
       try {
-        const result = await this.bpmnModeler.importXML(xmlStr);
+        const result = await this.bpmnModeler.importXML(createXmlStr);
         const { warnings } = result;
         console.log(warnings);
         this.success();
       } catch (err) {
         console.log(err.message, err.warnings);
       }
-      // this.bpmnModeler.importXML(xmlStr, (err) => {
-      //     if (err) {
-      //         console.error(err)
-      //     }
-      //     else {
-      //         // 这里是成功之后的回调, 可以在这里做一系列事情
-      //         this.success()
-      //     }
-      // })
     },
     success() {
       console.log("创建成功!");
-      this.addBpmnListener();
       this.addModelerListener();
-    },
-    addBpmnListener() {
-      // 获取a标签dom节点
-      const that = this;
-      const downloadLink = this.$refs.saveDiagram;
-      const downloadSvgLink = this.$refs.saveSvg;
-      // 给图绑定事件，当图有发生改变就会触发这个事件
-      this.bpmnModeler.on("commandStack.changed", function () {
-        that.saveSVG(downloadSvgLink);
-        that.saveDiagram(downloadLink);
-        // that.saveSVG(function(err, svg) {
-        //     that.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg)
-        // })
-        // that.saveDiagram(function(err, xml) {
-        //     that.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml)
-        // })
-      });
     },
     addModelerListener() {
       // 监听 modeler
@@ -140,6 +123,28 @@ export default {
           var shape = e.element ? elementRegistry.get(e.element.id) : e.shape;
         });
       });
+    },
+    newDiagram() {
+      this.createNewDiagram(defaultTemplateXml);
+    },
+    openDiagram(item) {
+      const reader = new FileReader();
+      reader.readAsText(item.file, "utf-8");
+      reader.onload = () => {
+        this.createNewDiagram(reader.result);
+        this.$refs.upload.clearFiles();
+      };
+      this.$refs.upload.clearFiles();
+      return false;
+    },
+    async saveDiagramBpmn() {
+      try {
+        const result = await this.bpmnModeler.saveXML({ format: true });
+        const { xml } = result;
+        this.downloadDiagram({data:xml});
+      } catch (err) {
+        console.log(err);
+      }
     },
     // 将xml文件post给后端
     async postXML() {
@@ -163,49 +168,19 @@ export default {
         console.log(err);
       }
     },
-    async saveSVG(downloadSvgLink) {
+    downloadDiagram({name = "diagram.bpmn", data}) {
       try {
-        const result = await this.bpmnModeler.saveSVG();
-        const { svg } = result;
-        //console.log(svg);
-        this.setEncoded(downloadSvgLink, "diagram.svg", svg);
+        if (data) {
+          const downloadLink = this.$refs.downloadLink;
+          const encodedData = encodeURIComponent(data);
+          downloadLink.href = "data:application/bpmn20-xml;charset=UTF-8," + encodedData;
+          downloadLink.download = name;
+          downloadLink.click();
+        }
       } catch (err) {
         console.log(err);
-        this.setEncoded(downloadSvgLink, "diagram.svg", null);
       }
-      // this.bpmnModeler.saveSVG(done)
-    },
-    // 下载为bpmn格式,done是个函数，调用的时候传入的
-    async saveDiagram(downloadLink) {
-      // 把传入的done再传给bpmn原型的saveXML函数调用
-      try {
-        const result = await this.bpmnModeler.saveXML({ format: true });
-        const { xml } = result;
-        // console.log(xml);
-        this.setEncoded(downloadLink, "diagram.bpmn", xml);
-      } catch (err) {
-        console.log(err);
-        this.setEncoded(downloadLink, "diagram.bpmn", null);
-      }
-      // this.bpmnModeler.saveXML({ format: true }, function(err, xml) {
-      //     done(err, xml)
-      // })
-    },
-    // 当图发生改变的时候会调用这个函数，这个data就是图的xml
-    setEncoded(link, name, data) {
-      // // 把xml转换为URI，下载要用到的
-      // const encodedData = encodeURIComponent(data);
-      // // 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
-      // console.log(link, name, data);
-      // let xmlFile = new File([data], "test.bpmn");
-      // console.log(xmlFile);
-      // console.log(data);
-      // if (data) {
-      //   link.className = "active";
-      //   link.href = "data:application/bpmn20-xml;charset=UTF-8," + encodedData;
-      //   link.download = name;
-      // }
-    },
+    }
   },
   // 计算属性
   computed: {},
