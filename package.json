@@ -14,7 +14,7 @@
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
     "axios": "^0.26.1",
-    "bpmn-js": "^9.0.3",
+    "bpmn-js": "^8.10.0",
     "bpmn-js-properties-panel": "^0.46.0",
     "camunda-bpmn-moddle": "^6.1.2",
     "element-ui": "^2.15.6",

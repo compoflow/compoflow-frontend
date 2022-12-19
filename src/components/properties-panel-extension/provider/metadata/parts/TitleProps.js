@@ -20,6 +20,7 @@ export default function (group, element, translate) {
     //     }));
     // }
     if (element.type == 'bpmn:docker') {
+        /* 
         var options = []
         const req = new XMLHttpRequest();
         req.open("GET", 'http://106.14.40.180:31003/api/servicePackage/image/listRemote/' + project_name, false)
@@ -42,6 +43,27 @@ export default function (group, element, translate) {
             label: '镜像',
             selectOptions: options,
             modelProperty: 'image'
+        }))
+        */
+        group.entries.push(entryFactory.textField(translate, {
+            id: 'image',
+            description: '镜像名称',
+            label: '镜像',
+            modelProperty: 'image'
+        }))
+
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'port',
+            description: '端口',
+            label: '端口',
+            modelProperty: 'port'
+        }))
+
+        group.entries.push(entryFactory.textBox(translate, {
+            id: 'target',
+            description: '服务的路径（默认"/"）',
+            label: '路径',
+            modelProperty: 'target'
         }))
     }
 }
